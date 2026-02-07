@@ -175,3 +175,9 @@ footer {
   font-size: 14px;
   color: #333;
 }
+
+
+.skill-card.active {
+  border-color: #000;
+}
+
