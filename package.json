@@ -1,0 +1,12 @@
+{
+  "name": "skillswap-devin",
+  "version": "1.0.0",
+  "description": "Skill Swap Unit 8 - TDD",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}
