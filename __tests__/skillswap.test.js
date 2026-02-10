@@ -23,3 +23,36 @@ describe('filterSkillsByCategory', () => {
     expect(filterSkillsByCategory(skills, 'Cooking')).toEqual([]);
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const { calculateTotalCost } = require('../skillswap-functions');
+
+describe('calculateTotalCost', () => {
+  test('returns correct values for different hours and rates', () => {
+    expect(calculateTotalCost(20, 2)).toBe(40);
+  });
+
+  test('handles free sessions (0 rate) and zero hours', () => {
+    expect(calculateTotalCost(0, 3)).toBe(0);
+    expect(calculateTotalCost(20, 0)).toBe(0);
+  });
+
+  test('returns correct value for decimal hours', () => {
+    expect(calculateTotalCost(25, 1.5)).toBe(37.5);
+  });
+});
+
