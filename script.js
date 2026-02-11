@@ -109,3 +109,22 @@ document.addEventListener("click", (e) => {
   const filteredSkills = filterSkillsByCategory(skills, category);
   renderSkills(filteredSkills);
 });
+
+
+function calculateTotalCost(hourlyRate, hours) {
+  return hourlyRate * hours;
+}
+
+const calculateBtn = document.getElementById("calculateBtn");
+
+if (calculateBtn) {
+  calculateBtn.addEventListener("click", () => {
+    const rate = parseFloat(document.getElementById("rateInput").value);
+    const hours = parseFloat(document.getElementById("hoursInput").value);
+
+    const total = calculateTotalCost(rate, hours);
+
+    document.getElementById("totalResult").textContent =
+      "Total Cost: $" + total;
+  });
+}
