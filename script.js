@@ -162,3 +162,35 @@ if (matchBtn) {
     });
   });
 }
+
+
+const skillForm = document.getElementById("skillForm");
+
+if (skillForm) {
+  skillForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const messageEl = document.getElementById("skillFormMessage");
+    if (messageEl) messageEl.textContent = "Creating skill...";
+
+    const skillData = {
+      title: document.getElementById("skillTitle").value,
+      category: document.getElementById("skillCategory").value,
+      price: parseFloat(document.getElementById("skillPrice").value),
+      description: document.getElementById("skillDescription").value,
+      provider: document.getElementById("skillProvider").value,
+    };
+
+    try {
+      await window.apiService.createSkill(skillData);
+
+      if (messageEl) messageEl.textContent = "Skill created!";
+      skillForm.reset();
+
+      await loadSkills();
+    } catch (error) {
+      console.error(error);
+      if (messageEl) messageEl.textContent = "Failed to create skill.";
+    }
+  });
+}
