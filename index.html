@@ -97,7 +97,42 @@
         </div>
       </section>
 
+      <section class="add-skill">
+        <div class="container">
+          <h3>Add a New Skill</h3>
 
+            <form id="skillForm">
+              <label>
+                Title:
+                <input type="text" id="skillTitle" required />
+              </label>
+
+              <label>
+                Category:
+                <input type="text" id="skillCategory" required />
+              </label>
+
+              <label>
+                Price:
+                <input type="number" id="skillPrice" step="0.01" required />
+              </label>
+
+              <label>
+                Description:
+                <input type="text" id="skillDescription" required />
+              </label>
+
+              <label>
+                Provider:
+                <input type="text" id="skillProvider" required />
+              </label>
+
+              <button type="submit">Create Skill</button>
+            </form>
+
+            <p id="skillFormMessage"></p>
+          </div>
+        </section>
 
 
     </main>
