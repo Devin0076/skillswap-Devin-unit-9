@@ -1,41 +1,7 @@
 // Set footer year automatically
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Skill data (categories must match your filter button data-category values)
-const skills = [
-  {
-    title: "Intro to JavaScript",
-    category: "Programming",
-    price: 25,
-    instructor: "Devin U.",
-    desc: "Learn variables, functions, and DOM basics with hands-on examples.",
-    details: "Sessions are 60 minutes. Bring a laptop."
-  },
-  {
-    title: "English Conversation",
-    category: "Music",
-    price: 18,
-    instructor: "Maya K.",
-    desc: "Practice speaking and build confidence for school or work.",
-    details: "Conversation practice + pronunciation tips."
-  },
-  {
-    title: "Fitness Coaching",
-    category: "Career",
-    price: 30,
-    instructor: "Jordan S.",
-    desc: "Beginner-friendly workouts and accountability check-ins.",
-    details: "Custom plan based on your goals and schedule."
-  },
-  {
-    title: "Career Prep",
-    category: "Career",
-    price: 22,
-    instructor: "Sam R.",
-    desc: "Resume review and mock interviews tailored to your field.",
-    details: "Includes resume tips + interview practice."
-  }
-];
+let skills = [];
 
 // Filter function for the UI (browser can’t use require/module.exports without a bundler)
 function filterSkillsByCategory(skillsList, category) {
@@ -97,8 +63,30 @@ function renderSkills(list) {
   attachCardToggleHandlers();
 }
 
-// Initial render
-renderSkills(skills);
+async function loadSkills() {
+  try {
+    const apiSkills = await window.apiService.fetchSkills();
+
+    skills = apiSkills.map((s) => ({
+      title: s.title,
+      category: s.category,
+      price: s.price,
+      instructor: s.provider,
+      desc: s.description,
+      details: ''
+    }));
+
+    renderSkills(skills);
+  } catch (error) {
+    console.error(error);
+    if (cardsGrid) {
+      cardsGrid.innerHTML = "<p>Failed to load skills.</p>";
+    }
+  }
+}
+
+// Initial load from API
+loadSkills();
 
 // Filter button clicks
 document.addEventListener("click", (e) => {
@@ -172,5 +160,37 @@ if (matchBtn) {
 
       results.appendChild(card);
     });
+  });
+}
+
+
+const skillForm = document.getElementById("skillForm");
+
+if (skillForm) {
+  skillForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const messageEl = document.getElementById("skillFormMessage");
+    if (messageEl) messageEl.textContent = "Creating skill...";
+
+    const skillData = {
+      title: document.getElementById("skillTitle").value,
+      category: document.getElementById("skillCategory").value,
+      price: parseFloat(document.getElementById("skillPrice").value),
+      description: document.getElementById("skillDescription").value,
+      provider: document.getElementById("skillProvider").value,
+    };
+
+    try {
+      await window.apiService.createSkill(skillData);
+
+      if (messageEl) messageEl.textContent = "Skill created!";
+      skillForm.reset();
+
+      await loadSkills();
+    } catch (error) {
+      console.error(error);
+      if (messageEl) messageEl.textContent = "Failed to create skill.";
+    }
   });
 }
